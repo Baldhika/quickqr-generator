@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+ <html lang="en"> 
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="google-adsense-account" content="ca-pub-8981007891270581">
+  
+  <title>Quick QR Generator - Instant & Free QR Codes</title>
+
+  <!-- ✅ Google AdSense (only once) -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8981007891270581" crossorigin="anonymous"></script>
+
+  <!-- ✅ Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- ✅ Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- ✅ QRCode library (use local or CDN — here local used) -->
+  <script <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+
+  <!-- ✅ Your custom JavaScript file -->
+  <script src="your-script.js" defer></script>
+
+  <!-- ✅ Custom Styles -->
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f8fafc;
+    }
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #e2e8f0;
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #60a5fa;
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #3b82f6;
+    }
+    #qr-code-display canvas {
+      display: block;
+      margin: 0 auto;
+      transition: transform 0.3s;
+    }
+    #qr-code-display canvas:hover {
+      transform: scale(1.1);
+    }
+    #generate-qr-button, #download-qr {
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 0.5rem;
+      padding: 0.75rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+    #generate-qr-button:hover {
+      background-color: #2563eb;
+      transform: translateY(-2px) scale(1.02);
+    }
+    #download-qr:hover {
+      background-color: #16a34a;
+      transform: translateY(-2px) scale(1.02);
+    }
+    #qr-data, #qr-type {
+      border: 2px solid #d1d5db;
+      transition: border-color 0.2s ease;
+    }
+    #qr-data:focus, #qr-type:focus {
+      border-color: #3b82f6;
+      outline: none;
+    }
+    #force-search {
+      accent-color: #3b82f6;
+    }
+    #qr-wrapper {
+      width: 300px;
+      height: 300px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: white;
+      border: 1px solid #ccc;
+      margin: auto;
+    }
+    canvas {
+      display: block;
+    }
+  </style>
+</head>
+          <body class="text-gray-800" "bg-gray-100 flex justify-center items-center min-h-screen">
+ <!-- ✅ Header Section -->
+<header class="bg-white shadow-sm py-4 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto flex justify-between items-center">
+    
+    <!-- 🔗 Logo + Brand -->
+    <a href="/" class="flex items-center space-x-2" aria-label="Quick QR Gen home">
+      <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 4.354a4 4 0 110 5.292
+                 M12 20.054a4 4 0 110-5.292
+                 M12 14.054a4 4 0 110-5.292
+                 m0 5.292V20.054
+                 m0-15.7V4.354" />
+      </svg>
+      <span class="text-2xl font-bold text-gray-900">Quick QR Gen</span>
+    </a>
+
+    <!-- 🧭 Desktop Navigation -->
+    <nav class="hidden md:flex space-x-8" aria-label="Main navigation">
+      <a href="#how-it-works" class="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200">How it Works</a>
+      <a href="#features" class="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200">Features</a>
+      <a href="#about" class="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200">About Us</a>
+      <a href="#contact" class="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200">Contact</a>
+    </nav>
+
+    <!-- 📱 Mobile Menu Button -->
+    <button class="md:hidden p-2 rounded-md text-gray-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500" aria-label="Open mobile menu">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+  </div>
+</header>
+
+<!-- ❌ Remove This <canvas> Unless You're Using QRCode.toCanvas() -->
+<!-- <canvas id="canvas"></canvas> -->
+
+<!-- ✅ External JS for QR Logic (use defer if it's in <head>) -->
+<script src="bundle.js" defer></script>
+
+ <section class="bg-gradient-to-br from-blue-500 to-indigo-600 text-white py-16 px-4 text-center">
+ <div class="max-w-4xl mx-auto">
+ <h1 class="text-4xl sm:text-5xl font-extrabold mb-6"> Generate <span class="text-yellow-300">Instant</span> & <span class="text-green-300">Free</span> QR Codes </h1>
+ <p class="text-lg mb-10 opacity-90"> Create QR codes for links, text, UPI IDs, and more. Simple, secure, and privacy-first. </p> <div class="bg-white p-6 rounded-xl shadow-2xl max-w-2xl mx-auto"> <h2 class="text-blue-700 text-2xl font-bold mb-6">Create Your QR Code Now!</h2> 
+   
+      <div class="bg-white text-gray-800 rounded-lg shadow-lg p-6">
+        <input type="text" id="qr-data" placeholder="Enter text, URL, UPI, etc."
+          class="w-full p-3 mb-4 border border-gray-300 rounded" />
+        <select id="qr-type"
+          class="w-full p-3 mb-4 border border-gray-300 rounded text-gray-800">
+          <option value="text">Text</option>
+          <option value="url" selected>URL</option>
+          <option value="upi">UPI ID</option>
+          <option value="wifi">Wi-Fi</option>
+          <option value="vcard">Contact (vCard)</option>
+          <option value="email">Email</option>
+          <option value="sms">SMS</option>
+        </select>
+
+        <label class="flex items-center mb-4 text-sm">
+          <input type="checkbox" id="force-search" class="mr-2" />
+          🔍 Force Google Search (for Text)
+        </label>
+
+        <button id="generate-qr-button" class="w-full bg-blue-600 text-white">
+          Generate QR Code
+        </button>
+<div id="qr-wrapper">
+
+  <!-- ✅ Square QR Box Start -->
+  <div class="w-64 h-64 bg-white border-4 border-gray-300 rounded-lg shadow-lg flex items-center justify-center">
+
+    <!-- QR Display Area -->
+    <div id="qr-code-display" class="bg-white p-4 rounded-lg flex justify-center items-center w-full h-full border border-dashed border-gray-300">
+      <div id="qr-text-display" class="text-center">
+        <p class="text-gray-500">आपका QR कोड यहां दिखाई देगा</p>
+        <p class="text-gray-500">Your QR Code will appear here</p>
+      </div>
+    </div>
+
+  </div>
+  <!-- ✅ Square QR Box End -->
+</div>
+  <!-- Download Button -->
+  <button id="download-qr" class="hidden mt-4 w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-3 rounded-lg transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-300 shadow-lg">
+    Download QR Code
+  </button>
+
+
+         </section> 
+    <!-- ✅ Features Section -->
+<section id="features" class="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-white">
+  <div class="max-w-7xl mx-auto text-center">
+    <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-12">Why Choose Quick QR Gen?</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+      <!-- Feature Item -->
+      <div class="bg-blue-50 p-6 rounded-xl shadow-md transform hover:scale-105 transition-transform duration-300">
+        <div class="flex justify-center mb-4">
+          <svg class="w-12 h-12 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+        </div>
+        <h3 class="text-xl font-semibold text-gray-900 mb-3">Instant & Free</h3>
+        <p class="text-gray-700">Generate unlimited QR codes without any cost or waiting time.</p>
+      </div>
+
+      <!-- Privacy -->
+      <div class="bg-green-50 p-6 rounded-xl shadow-md transform hover:scale-105 transition-transform duration-300">
+        <div class="flex justify-center mb-4">
+          <svg class="w-12 h-12 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9 12l2 2 4-4..." />
+          </svg>
+        </div>
+        <h3 class="text-xl font-semibold text-gray-900 mb-3">Privacy First</h3>
+        <p class="text-gray-700">We don't store your data. Your privacy is our top priority.</p>
+      </div>
+
+      <!-- Customizable -->
+      <div class="bg-purple-50 p-6 rounded-xl shadow-md transform hover:scale-105 transition-transform duration-300">
+        <div class="flex justify-center mb-4">
+          <svg class="w-12 h-12 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="..."></path>
+          </svg>
+        </div>
+        <h3 class="text-xl font-semibold text-gray-900 mb-3">Customizable</h3>
+        <p class="text-gray-700">Add colors and logos to make your QR codes unique.</p>
+      </div>
+
+      <!-- Mobile Friendly -->
+      <div class="bg-yellow-50 p-6 rounded-xl shadow-md transform hover:scale-105 transition-transform duration-300">
+        <div class="flex justify-center mb-4">
+          <svg class="w-12 h-12 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 18h.01M8 21h8a2 2..." />
+          </svg>
+        </div>
+        <h3 class="text-xl font-semibold text-gray-900 mb-3">Mobile & Desktop Friendly</h3>
+        <p class="text-gray-700">Seamless experience on any device, big or small.</p>
+      </div>
+
+      <!-- No Signup -->
+      <div class="bg-red-50 p-6 rounded-xl shadow-md transform hover:scale-105 transition-transform duration-300">
+        <div class="flex justify-center mb-4">
+          <svg class="w-12 h-12 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M11 5H6a2 2 0 00-2 2v11..." />
+          </svg>
+        </div>
+        <h3 class="text-xl font-semibold text-gray-900 mb-3">No Signup Needed</h3>
+        <p class="text-gray-700">Start generating QR codes instantly, no registration required.</p>
+      </div>
+
+      <!-- Made in India -->
+      <div class="bg-teal-50 p-6 rounded-xl shadow-md transform hover:scale-105 transition-transform duration-300">
+        <div class="flex justify-center mb-4">
+          <svg class="w-12 h-12 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M3 5h12M9 3v2m1.048..." />
+          </svg>
+        </div>
+        <h3 class="text-xl font-semibold text-gray-900 mb-3">Made in India</h3>
+        <p class="text-gray-700">Proudly an Indian platform, designed for simplicity and security.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ✅ How It Works -->
+<section id="how-it-works" class="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-gray-50">
+  <div class="max-w-7xl mx-auto text-center">
+    <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-12">How It Works</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+      <div class="p-6 bg-white rounded-xl shadow-md flex flex-col items-center">
+        <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-3xl font-bold mb-4">1</div>
+        <h3 class="text-xl font-semibold text-gray-900 mb-3">Enter Your Data</h3>
+        <p class="text-gray-700">Type or paste the text, URL, UPI ID, or other information you want to encode.</p>
+      </div>
+
+      <div class="p-6 bg-white rounded-xl shadow-md flex flex-col items-center">
+        <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-3xl font-bold mb-4">2</div>
+        <h3 class="text-xl font-semibold text-gray-900 mb-3">Generate QR Code</h3>
+        <p class="text-gray-700">Click the 'Generate' button and your custom QR code will appear instantly.</p>
+      </div>
+
+      <div class="p-6 bg-white rounded-xl shadow-md flex flex-col items-center">
+        <div class="w-16 h-16 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center text-3xl font-bold mb-4">3</div>
+        <h3 class="text-xl font-semibold text-gray-900 mb-3">Download & Use</h3>
+        <p class="text-gray-700">Download your QR code as an image and use it anywhere you like!</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ✅ About Section -->
+<section id="about" class="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-white">
+  <div class="max-w-7xl mx-auto text-center">
+    <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-8">About Quick QR Gen</h2>
+    <p class="text-lg text-gray-700 leading-relaxed max-w-3xl mx-auto mb-8">
+      Quick QR Gen is an initiative to provide a simple, smart, and secure way to generate QR codes for everyone in India.
+      We believe in making technology accessible and easy to use, while ensuring your data remains private.
+    </p>
+    <p class="text-lg text-gray-700 leading-relaxed max-w-3xl mx-auto">
+      Whether you need a QR code for a UPI payment, to share a website, or simply to encode some text,
+      Quick QR Gen is your go-to solution.
+    </p>
+  </div>
+</section>
+
+<!-- ✅ Premium CTA -->
+<section class="bg-gradient-to-br from-indigo-600 to-purple-700 text-white py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 text-center">
+  <div class="max-w-4xl mx-auto">
+    <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-6">Need a Custom QR Code?</h2>
+    <p class="text-lg sm:text-xl mb-10 opacity-90">For unique designs, embedded logos, or special requirements, our premium service has you covered.</p>
+    <a href="#contact" class="inline-block bg-white text-indigo-700 font-bold py-3 px-8 rounded-full text-lg shadow-lg hover:bg-gray-100 transform hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-white focus:ring-opacity-50">
+      Get a Premium QR
+    </a>
+  </div>
+</section>
+
+<!-- ✅ Contact Section -->
+<section id="contact" class="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-gray-50">
+  <div class="max-w-xl mx-auto text-center">
+    <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-8">Get in Touch</h2>
+    <p class="text-lg text-gray-700 mb-8">Have questions or need support? Feel free to reach out to us.</p>
+    <ul class="text-xl font-semibold text-blue-600 space-y-3 mb-4">
+      <li>📧 Email: <a href="mailto:baldhika2124@quick-qr-gen.in" class="hover:underline">baldhika2124@quick-qr-gen.in</a></li>
+      <li>🔗 Telegram: <a href="https://t.me/+cHKwEfMEHgk4ODA1" target="_blank" rel="noopener noreferrer" class="hover:underline">@QuickQR_Support</a></li>
+      <li>🐦 Twitter: <a href="https://x.com/pisoskar83058" target="_blank" rel="noopener noreferrer" class="hover:underline">@pisoskar83058</a></li>
+    </ul>
+    <p class="text-gray-600 text-sm">For premium custom QR code requests, please contact us via email.</p>
+  </div>
+</section>
+
+<!-- ✅ Footer -->
+<footer class="bg-gray-800 text-white py-8 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto text-center sm:flex sm:justify-between sm:items-center">
+    <p class="text-sm mb-4 sm:mb-0">&copy; 2025 Quick QR Gen. All rights reserved.</p>
+    <div class="flex justify-center space-x-6">
+      <a href="https://www.facebook.com/share/1AsGSVm69f/" target="_blank" class="text-gray-400 hover:text-white" aria-label="Facebook">
+        <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="..."/></svg>
+      </a>
+      <a href="https://twitter.com/BPisoskar" target="_blank" class="text-gray-400 hover:text-white" aria-label="Twitter">
+        <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="..."/></svg>
+      </a>
+      <a href="#" class="text-gray-400 hover:text-white">Privacy Policy</a>
+      <a href="#" class="text-gray-400 hover:text-white">Terms of Service</a>
+    </div>
+  </div>
+</footer>
+‎
+‎<script src="/build/qrcode.js"></script>
+<script>
+  const qrDataInput = document.getElementById('qr-data');
+  const qrTypeSelect = document.getElementById('qr-type');
+  const generateQrButton = document.getElementById('generate-qr-button');
+  const qrTextDisplay = document.getElementById('qr-text-display');
+  const qrCodeDisplay = document.getElementById('qr-code-display');
+  const downloadQrButton = document.getElementById('download-qr');
+  const forceSearchCheckbox = document.getElementById('force-search'); // optional
+
+  let qrcodeInstance = null;
+
+  if (generateQrButton) {
+    generateQrButton.addEventListener('click', () => {
+      const data = qrDataInput.value.trim();
+      const qrType = qrTypeSelect ? qrTypeSelect.value : 'text';
+
+      if (!data) {
+        qrCodeDisplay.innerHTML = `<p class="text-red-500 text-center">कृपया QR कोड जनरेट करने के लिए डेटा दर्ज करें।</p>` `<p class="text-red-500 text-center">Your QR Code will appear here</p>`;
+      
+  downloadQrButton.classList.add('hidden');
+        return;
+      }
+
+      // Clear old QR code
+      qrCodeDisplay.innerHTML = '';
+      qrcodeInstance = null;
+
+      let formattedData = data;
+      let displayText = data;
+
+      switch (qrType) {
+        case 'url':
+          if (!/^https?:\/\//i.test(data)) {
+            formattedData = 'https://' + data;
+          }
+          displayText = `<a href="${formattedData}" target="_blank" class="text-blue-600 underline">${formattedData}</a>`;
+          break;
+
+        case 'upi':
+          formattedData = `upi://pay?pa=${data}`;
+          displayText = `<code>${formattedData}</code>`;
+          break;
+
+        case 'email':
+          formattedData = `mailto:${data}`;
+          displayText = `<a href="${formattedData}" class="text-blue-600 underline">${data}</a>`;
+          break;
+
+        case 'sms':
+          formattedData = `sms:${data}`;
+          displayText = `<code>${formattedData}</code>`;
+          break;
+
+        case 'wifi':
+          // Dynamic SSID entry (optional: you can add SSID input)
+          const ssid = 'QuickQR'; // hardcoded, or get from input
+          formattedData = `WIFI:T:WPA;S=${ssid};P=${data};;`;
+          displayText = `<code>${formattedData}</code>`;
+          break;
+
+        case 'vcard':
+          formattedData = `BEGIN:VCARD\nVERSION:3.0\nFN:${data}\nEND:VCARD`;
+          displayText = `<code>${formattedData}</code>`;
+          break;
+
+        case 'text':
+        default:
+          if (forceSearchCheckbox && forceSearchCheckbox.checked) {
+            formattedData = `https://www.google.com/search?q=${encodeURIComponent(data)}`;
+            displayText = `<a href="${formattedData}" target="_blank" class="text-blue-600 underline">Search "${data}" on Google</a>`;
+          } else {
+            displayText = `<code>${data}</code>`;
+          }
+          break;
+      }
+
+      // ✅ Generate QR Code
+      qrcodeInstance = new QRCode(qrCodeDisplay, {
+        text: formattedData,
+        width: 256,
+        height: 256,
+        correctLevel: QRCode.CorrectLevel.H,
+      });
+
+      qrTextDisplay.innerHTML = displayText;
+      downloadQrButton.classList.remove('hidden');
+    });
+  }
+
+  // ✅ Download QR Code
+  downloadQrButton.addEventListener('click', () => {
+    const canvas = qrCodeDisplay.querySelector('canvas');
+    if (canvas) {
+      const link = document.createElement('a');
+      link.href = canvas.toDataURL("image/png");
+      link.download = "quick-qr-code.png";
+      link.click();
+    }
+  });
+</script>
+ 
+‎</body>
+</html>
